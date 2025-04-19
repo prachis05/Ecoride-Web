@@ -1,0 +1,262 @@
+<!-- frontend/pages/signup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - EcoRide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    
+    <!--NavBar-->
+    <style>
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%);
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+    </style>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <!-- Logo and primary nav -->
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center">
+                        <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                        <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+                    </a>
+                    <!-- Desktop Navigation -->
+                    <div class="hidden md:flex items-center ml-10 space-x-8">
+                        <div class="dropdown relative">
+                            <button class="flex items-center text-gray-700 hover:text-blue-600">
+                                Find Rides
+                                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu hidden absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1">
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Search Rides</a>
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Popular Routes</a>
+                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Last Minute</a>
+                            </div>
+                        </div>
+                        <a href="#" class="text-gray-700 hover:text-blue-600">Offer a Ride</a>
+                        <a href="#" class="text-gray-700 hover:text-blue-600">How it Works</a>
+                        <a href="#" class="text-gray-700 hover:text-blue-600">Help</a>
+                    </div>
+                </div>
+
+                <!-- Secondary Nav -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="login.html" class="text-gray-700 hover:text-blue-600">Login</a>
+                    <a href="signup.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Find Rides</a>
+                <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Offer a Ride</a>
+                <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">How it Works</a>
+                <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Help</a>
+                <div class="border-t border-gray-200 pt-2">
+                    <a href="login.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Login</a>
+                    <a href="signup.html" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
+            <div>
+                <img class="mx-auto h-12 w-auto" src="assets/logo.png" alt="CarPool Logo">
+                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
+            </div>
+            <form class="mt-8 space-y-6" id="signupForm">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <label for="fullName" class="sr-only">Full Name</label>
+                        <input id="fullName" name="fullName" type="text" required 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="Full Name">
+                    </div>
+                    <div>
+                        <label for="email" class="sr-only">Email address</label>
+                        <input id="email" name="email" type="email" required 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="Email address">
+                    </div>
+                    <div>
+                        <label for="password" class="sr-only">Password</label>
+                        <input id="password" name="password" type="password" required 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="Password">
+                    </div>
+                    <div>
+                        <label for="confirmPassword" class="sr-only">Confirm Password</label>
+                        <input id="confirmPassword" name="confirmPassword" type="password" required 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="Confirm Password">
+                    </div>
+                    <div>
+                        <label for="phone" class="sr-only">Phone</label>
+                        <input id="phone" name="phone" type="text" 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="Phone (optional)">
+                    </div>
+                    <div>
+                        <label for="address" class="sr-only">Address</label>
+                        <input id="address" name="address" type="text" 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="Address (optional)">
+                    </div>
+                    <div>
+                        <label for="role" class="sr-only">Role</label>
+                        <select id="role" name="role" required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm">
+                            <option value="">Select Role</option>
+                            <option value="Driver">Driver</option>
+                            <option value="Rider">Rider</option>
+                        </select>
+                    </div>
+                    
+                    <div id="licenseField" style="display: none;">
+                        <label for="licenseNumber" class="sr-only">License Number (e.g., MH1220150012345):</label>
+                        <input id="licenseNumber" name="licenseNumber" type="text" 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="SS99-YYYYNNNNNNN", maxlength="16">
+                        <small>Format: SS99YYYYNNNNNNN</small>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <input id="terms" name="terms" type="checkbox" required
+                        class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 block text-sm text-gray-900">
+                        I agree to the <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a> and <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <div>
+                    <button type="submit" 
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Sign up
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center mt-4">
+                <p class="text-sm text-gray-600">
+                    Already have an account?
+                    <a href="login.html" class="font-medium text-blue-600 hover:text-blue-500">
+                        Sign in
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById('role').addEventListener('change', function () {
+        const licenseField = document.getElementById('licenseField');
+        const licenseInput = document.getElementById('licenseNumber');
+
+        if (this.value === 'Driver') {
+            licenseField.style.display = 'block';
+            licenseInput.setAttribute('required', 'required');
+        } else {
+            licenseField.style.display = 'none';
+            licenseInput.removeAttribute('required');
+        }
+    });
+
+    document.getElementById('signupForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const licenseInput = document.getElementById('licenseNumber');
+        const role = document.getElementById('role').value;
+        const licensePattern = /^[A-Z]{2}\d{2}\d{4}\d{7}$/;
+
+        // Validate license number if role is Driver
+        if (role === 'Driver') {
+            const licenseNumber = licenseInput.value.trim().toUpperCase();
+            const licensePattern = /^[A-Z]{2}\d{2}\d{4}\d{7}$/;
+
+
+
+            if (!licensePattern.test(licenseNumber)) {
+            licenseInput.setCustomValidity("Please enter a valid license number.");
+            licenseInput.reportValidity();
+            return;
+            } else {
+                licenseInput.setCustomValidity(""); // Clear error if valid
+                }
+        }
+
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+        }
+
+        const userData = {
+            name: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value,
+            role: role,
+            password: password
+        };
+
+        if (role === 'Driver') {
+            userData.license_number = licenseInput.value.trim().toUpperCase();
+        }
+
+        try {
+            const response = await fetch('http://localhost:5000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+
+            if (response.ok) {
+                alert('Signup successful! Redirecting to login...');
+                window.location.href = 'login.html';
+            } else {
+                const result = await response.json();
+                alert(`Error: ${result.message}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        }
+    });
+</script>
+
+</html>

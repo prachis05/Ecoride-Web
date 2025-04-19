@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popular Routes - EcoRide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <!-- Logo and primary nav -->
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                        <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+                    </a>
+                    <!-- Desktop Navigation -->
+                    <div class="hidden md:flex items-center ml-10 space-x-8">
+                        <div class="dropdown relative">
+                            <button id="dropdownButton" class="flex items-center text-gray-700 hover:text-blue-600">
+                                Find Rides
+                                <svg class="ml-1 w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div id="dropdownMenu" class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
+                                <a href="search-rides.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Search Rides</a>
+                                <a href="popular-routes.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Popular Routes</a>
+                            </div>
+                        </div>
+                        <a href="offer-ride.html" class="text-gray-700 hover:text-blue-600">Offer a Ride</a>
+                        <a href="index.html#how-it-works" class="text-gray-700 hover:text-blue-600">How it Works</a>
+                        <a href="help.html" class="text-gray-700 hover:text-blue-600">Help</a>
+                    </div>
+                </div>
+    
+                <div id="auth-section" class="hidden md:flex items-center space-x-4">
+                    <a href="login.html" id="loginLink" class="text-gray-700 hover:text-blue-600">Login</a>
+                    <a href="signup.html" id="signupLink" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
+                  
+                    <!-- Greeting with user icon -->
+                    <span id="usernameGreeting" class="flex items-center gap-2 text-gray-700 hidden">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M5.121 17.804A4 4 0 017 16h10a4 4 0 011.879.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      Hi, <span id="username-display" class="font-semibold text-blue-700"></span>
+                    </span>
+                  
+                    <!-- Elegant Logout Button -->
+                    <button onclick="logout()" id="logoutBtn"
+                      class="text-gray-600 hover:text-white hover:bg-red-500 px-3 py-1 rounded-md transition hidden text-sm">
+                      Logout
+                    </button>
+                </div>
+    
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button id="mobile-dropdown-button" class="flex items-center w-full px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">
+                    Find Rides
+                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="mobile-dropdown-menu" class="hidden pl-4">
+                    <a href="search-rides.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Search Rides</a>
+                    <a href="popular-routes.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Popular Routes</a>
+                    <a href="last-minute.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Last Minute</a>
+                </div>
+                <a href="offer-ride.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Offer a Ride</a>
+                <a href="index.html#how-it-works" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">How it Works</a>
+                <a href="help.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Help</a>
+                <div class="border-t border-gray-200 pt-2">
+                    <a href="login.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Login</a>
+                    <a href="signup.html" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <style>
+        .dropdown-menu.active {
+            display: block;
+        }
+        
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+    </style>
+
+    <!-- Popular Routes Hero Section -->
+    <section class="pt-24 pb-12 bg-gradient-to-r from-blue-600 to-blue-700">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center text-white">
+                <h1 class="text-4xl font-bold mb-4">Popular Routes</h1>
+                <p class="text-xl text-blue-100">Find frequent rides on our most popular routes</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Routes Grid -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Route Card 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="relative">
+                        <img src="assets/pune-mum.webp" alt="Pune to Mumbai" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm">
+                            Popular
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold">Pune → Mumbai</h3>
+                                <p class="text-gray-600">3 hour journey</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-blue-600">₹300-350</p>
+                                <p class="text-gray-500">avg. price</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Daily Rides:</span>
+                                <span class="font-semibold">15+</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-4">
+                                <span>Monthly Travelers:</span>
+                                <span class="font-semibold">2000+</span>
+                            </div>
+                            <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition trigger-loading">
+                                Find Rides
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Route Card 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="relative">
+                        <img src="assets/mum-nas.jpg" alt="Nashik to Mumbai" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm">
+                            Popular
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold">Nashik → Mumbai</h3>
+                                <p class="text-gray-600">3hr 42min journey</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-blue-600">₹250-300</p>
+                                <p class="text-gray-500">avg. price</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Daily Rides:</span>
+                                <span class="font-semibold">12+</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-4">
+                                <span>Monthly Travelers:</span>
+                                <span class="font-semibold">1200+</span>
+                            </div>
+                            <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+                                Find Rides
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Route Card 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="relative">
+                        <img src="assets/pune-nas.jpg" alt="Pune to Nashik" class="w-full h-48 object-cover">
+                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm">
+                            Popular
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold">Pune → Nashik</h3>
+                                <p class="text-gray-600">4 hour journey</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-2xl font-bold text-blue-600">₹300-350</p>
+                                <p class="text-gray-500">avg. price</p>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                <span>Daily Rides:</span>
+                                <span class="font-semibold">10+</span>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-4">
+                                <span>Monthly Travelers:</span>
+                                <span class="font-semibold">1400+</span>
+                            </div>
+                            <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition trigger-loading">
+                                Find Rides
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weekly Top Routes -->
+    <section class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8">Weekly Top Routes</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Route</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Distance</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Avg. Price</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Available Rides</th>
+                            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Pune → Mumbai</td>
+                            <td class="px-6 py-4">148 km</td>
+                            <td class="px-6 py-4">₹300</td>
+                            <td class="px-6 py-4">15 rides</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-700 trigger-loading">View Rides →</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Pune → Nashik</td>
+                            <td class="px-6 py-4">213 km</td>
+                            <td class="px-6 py-4">₹270</td>
+                            <td class="px-6 py-4">12 rides</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-700 trigger-loading">View Rides →</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4">Mumbai → Nashik</td>
+                            <td class="px-6 py-4">167 km</td>
+                            <td class="px-6 py-4">₹250</td>
+                            <td class="px-6 py-4">9 rides</td>
+                            <td class="px-6 py-4">
+                                <button class="text-blue-600 hover:text-blue-700 trigger-loading">View Rides →</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Route Search CTA -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Don't see your route?</h2>
+            <p class="text-xl text-gray-600 mb-8">Search for specific routes or create a ride alert</p>
+            <div class="flex justify-center space-x-4">
+                <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition ">
+                    Search All Routes
+                </button>
+                <button class="border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition">
+                    Create Alert
+                </button>
+            </div>
+        </div>
+    </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white pt-12 pb-8">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <!-- Company Info -->
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                            <span class="text-xl font-bold ml-2">EcoRide</span>
+                        </div>
+                        <p class="text-gray-400">Making travel more social, affordable, and sustainable.</p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-white">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+    
+                    <!-- Quick Links -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">How it Works</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Popular Routes</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Support -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Support</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Safety Information</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Cancellation Options</a></li>
+                        </ul>
+                    </div>
+    
+                    <!-- Legal -->
+                    <div>
+                        <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white">Community Guidelines</a></li>
+                        </ul>
+                    </div>
+                </div>
+    
+                <!-- Bottom Footer -->
+                <div class="border-t border-gray-700 mt-8 pt-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center">
+                        <div class="text-gray-400 text-sm">
+                            © 2025 CarPool. All rights reserved.
+                        </div>
+                        <div class="mt-4 md:mt-0">
+                            <select class="bg-gray-700 text-gray-400 px-3 py-1 rounded-md">
+                                <option>English</option>
+                                <option>Español</option>
+                                <option>Français</option>
+                                <option>Deutsch</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Desktop dropdown
+                const dropdownButton = document.getElementById('dropdownButton');
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                const dropdownArrow = dropdownButton?.querySelector('svg');
+            
+                const user = JSON.parse(localStorage.getItem("user"));
+                const username = user?.name;
+            
+                const loginLink = document.getElementById("loginLink");
+                const signupLink = document.getElementById("signupLink");
+                const usernameGreeting = document.getElementById("usernameGreeting");
+                const usernameDisplay = document.getElementById("username-display");
+                const logoutBtn = document.getElementById("logoutBtn");
+                const authSection = document.getElementById("auth-section");
+                const secondaryNav = document.querySelector(".secondary-nav");
+            
+                if (username) {
+                    usernameDisplay.textContent = username;
+                    usernameGreeting.classList.remove("hidden");
+                    logoutBtn.classList.remove("hidden");
+                    loginLink.classList.add("hidden");
+                    signupLink.classList.add("hidden");
+                    secondaryNav?.classList.add("hidden");
+                    authSection.classList.remove("hidden");
+                } else {
+                    loginLink.classList.remove("hidden");
+                    signupLink.classList.remove("hidden");
+                    usernameGreeting.classList.add("hidden");
+                    logoutBtn.classList.add("hidden");
+                    secondaryNav?.classList.remove("hidden");
+                    authSection.classList.remove("hidden");
+                }
+            
+                dropdownButton?.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdownMenu?.classList.toggle('hidden');
+                    dropdownArrow?.classList.toggle('rotate-180');
+                });
+            
+                document.addEventListener('click', (e) => {
+                    if (!dropdownButton?.contains(e.target) && !dropdownMenu?.contains(e.target)) {
+                        dropdownMenu?.classList.add('hidden');
+                        dropdownArrow?.classList.remove('rotate-180');
+                    }
+                });
+            
+                // Mobile menu and dropdown
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const mobileDropdownButton = document.getElementById('mobile-dropdown-button');
+                const mobileDropdownMenu = document.getElementById('mobile-dropdown-menu');
+            
+                mobileMenuButton?.addEventListener('click', () => {
+                    mobileMenu?.classList.toggle('hidden');
+                });
+            
+                mobileDropdownButton?.addEventListener('click', () => {
+                    mobileDropdownMenu?.classList.toggle('hidden');
+                });
+            
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenuButton?.contains(e.target) && !mobileMenu?.contains(e.target)) {
+                        mobileMenu?.classList.add('hidden');
+                    }
+                });
+            
+                window.logout = function() {
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("token");
+                    window.location.href = "login.html";
+                }
+            });
+            </script>
+            
+</body>
+<!-- Fake Loading Screen -->
+<div id="loadingScreen" class="fixed inset-0 bg-white bg-opacity-80 z-50 hidden flex items-center justify-center">
+    <div class="text-center">
+        <svg class="animate-spin h-10 w-10 text-blue-600 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+        <p class="text-blue-700 font-semibold text-lg">Loading rides...</p>
+    </div>
+</div>
+<script>
+  document.querySelectorAll('.trigger-loading').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const loadingScreen = document.getElementById('loadingScreen');
+      loadingScreen.classList.remove('hidden');
+
+      setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        alert("This would take you to the rides list page!");
+      }, 2000);
+    });
+  });
+   
+</script>
+
+</html>

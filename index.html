@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarPool - Share Rides, Save Money, Reduce Carbon Footprint</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+   <!--NavBar-->
+<nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between h-16">
+            <!-- Logo and primary nav -->
+            <div class="flex items-center">
+                <a href="/frontend/index.html" class="flex items-center">
+                    <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                    <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+                </a>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center ml-10 space-x-8">
+                    <div class="dropdown relative">
+                        <button id="dropdownButton" class="flex items-center text-gray-700 hover:text-blue-600">
+                            Find Rides
+                            <svg class="ml-1 w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div id="dropdownMenu" class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
+                            <a href="search-rides.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Search Rides</a>
+                            <a href="popular-routes.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Popular Routes</a>
+                        </div>
+                    </div>
+                    <a href="offer-ride.html" id="navOfferRide" class="text-gray-700 hover:text-blue-600 hidden">Offer a Ride</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-blue-600">How it Works</a>
+                    <a href="help.html" class="text-gray-700 hover:text-blue-600">Help</a>
+                </div>
+            </div>
+
+            
+
+            <div id="auth-section" class="hidden md:flex items-center space-x-4">
+                <a href="login.html" id="loginLink" class="text-gray-700 hover:text-blue-600">Login</a>
+                <a href="signup.html" id="signupLink" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
+              
+                <!-- Greeting with user icon -->
+                <span id="usernameGreeting" class="flex items-center gap-2 text-gray-700 hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5.121 17.804A4 4 0 017 16h10a4 4 0 011.879.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Hi, <span id="username-display" class="font-semibold text-blue-700"></span>
+                </span>
+              
+                <!-- Elegant Logout Button -->
+                <button onclick="logout()" id="logoutBtn"
+                  class="text-gray-600 hover:text-white hover:bg-red-500 px-3 py-1 rounded-md transition hidden text-sm">
+                  Logout
+                </button>
+            </div>
+              
+              
+              
+            
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <button id="mobile-dropdown-button" class="flex items-center w-full px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">
+                Find Rides
+                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="mobile-dropdown-menu" class="hidden pl-4">
+                <a href="search-rides.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Search Rides</a>
+                <a href="popular-routes.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Popular Routes</a>
+                <a href="last-minute.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Last Minute</a>
+            </div>
+            <a href="offer-ride.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Offer a Ride</a>
+            <a href="how-it-works.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">How it Works</a>
+            <a href="help.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Help</a>
+            <div class="border-t border-gray-200 pt-2">
+                <a href="login.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Login</a>
+                <a href="signup.html" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .dropdown-menu.active {
+        display: block;
+    }
+    
+    .rotate-180 {
+        transform: rotate(180deg);
+    }
+</style>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+        <div class="max-w-7xl mx-auto px-4 py-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                        Share Rides, Create Connections
+                    </h1>
+                    <p class="text-xl mb-8 text-blue-100">
+                        Join thousands of travelers who trust EcoRide for safe, affordable, and eco-friendly rides across the country.
+                    </p>
+                    <div class="space-x-4">
+                        <a href="search-rides.html">
+                            <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition">
+                                Find a Ride
+                            </button>
+                        </a>
+                        <a href="offer-ride.html" id="heroOfferRideLink">
+                            <button id="heroOfferRideBtn" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
+                                Offer a Ride
+                            </button>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <img src="assets/carpool-bg.jpg" alt="Carpooling illustration" class="rounded-lg shadow-xl">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Benefits Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Why Choose EcoRide?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Save Money</h3>
+                    <p class="text-gray-600">Split travel costs and save up to 75% compared to solo travel options.</p>
+                </div>
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Reduce Emissions</h3>
+                    <p class="text-gray-600">Help create a sustainable future by sharing rides and reducing carbon emissions.</p>
+                </div>
+                <div class="text-center p-6">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Meet New People</h3>
+                    <p class="text-gray-600">Connect with like-minded travelers and make your journey more enjoyable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-20 bg-gray-50" id="how-it-works">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">How EcoRide Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="relative">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+                        <h3 class="text-xl font-semibold mb-3">Search</h3>
+                        <p class="text-gray-600">Enter your destination and find available rides</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+                        <h3 class="text-xl font-semibold mb-3">Book</h3>
+                        <p class="text-gray-600">Choose your ride and book instantly</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+                        <h3 class="text-xl font-semibold mb-3">Travel</h3>
+                        <p class="text-gray-600">Meet your co-travelers and start your journey</p>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">4</div>
+                        <h3 class="text-xl font-semibold mb-3">Review</h3>
+                        <p class="text-gray-600">Share your experience and help the community</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+<!-- Eco-Friendly Commitment -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Drive Green, Ride Clean</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold mb-3">Sustainable Rides</h3>
+                <p class="text-gray-600">We encourage carpooling to reduce carbon emissions and promote a cleaner environment.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold mb-3">Eco-Friendly Vehicles</h3>
+                <p class="text-gray-600">Support electric and hybrid vehicle rides to contribute to a greener future.</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold mb-3">Green Rewards</h3>
+                <p class="text-gray-600">Earn rewards for choosing eco-friendly rides and making sustainable travel choices.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+    <!-- CTA Section -->
+    <section class="bg-blue-600 text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">Ready to Start Your Journey?</h2>
+            <p class="text-xl mb-8">Join thousands of happy travelers using EcoRide every day.</p>
+            <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition">
+                Get Started Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold text-blue-600 mb-2">50K+</div>
+                    <div class="text-gray-600">Active Users</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-blue-600 mb-2">100K+</div>
+                    <div class="text-gray-600">Rides Completed</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-blue-600 mb-2">500K+</div>
+                    <div class="text-gray-600">KGs CO₂ Saved</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold text-blue-600 mb-2">4.8/5</div>
+                    <div class="text-gray-600">User Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white pt-12 pb-8">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                        <span class="text-xl font-bold ml-2">EcoRide</span>
+                    </div>
+                    <p class="text-gray-400">Making travel more social, affordable, and sustainable.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">How it Works</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Popular Routes</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Safety Information</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Cancellation Options</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Community Guidelines</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Footer -->
+            <div class="border-t border-gray-700 mt-8 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="text-gray-400 text-sm">
+                        © 2025 CarPool. All rights reserved.
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <select class="bg-gray-700 text-gray-400 px-3 py-1 rounded-md">
+                            <option>English</option>
+                            <option>Español</option>
+                            <option>Français</option>
+                            <option>Deutsch</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const user = JSON.parse(localStorage.getItem("user"));
+          const username = user?.name;
+      
+          // Elements
+          const loginLink = document.getElementById("loginLink");
+          const signupLink = document.getElementById("signupLink");
+          const usernameGreeting = document.getElementById("usernameGreeting");
+          const usernameDisplay = document.getElementById("username-display");
+          const logoutBtn = document.getElementById("logoutBtn");
+      
+          const authSection = document.getElementById("auth-section");
+          const secondaryNav = document.querySelector(".secondary-nav");
+      
+          if (username) {
+            // Show "Hi, username" and Logout
+            usernameDisplay.textContent = username;
+            usernameGreeting.classList.remove("hidden");
+            logoutBtn.classList.remove("hidden");
+      
+            // Hide login & signup
+            loginLink.classList.add("hidden");
+            signupLink.classList.add("hidden");
+      
+            // Hide secondary nav if it exists
+            secondaryNav?.classList.add("hidden");
+      
+            // Show the whole auth section
+            authSection.classList.remove("hidden");
+
+              // Role-based button/link logic
+           if (user?.role === "Driver") {
+            // Enable button and keep nav link visible
+            heroOfferRideBtn?.removeAttribute("disabled");
+            heroOfferRideBtn?.removeAttribute("title");
+            navOfferRide?.classList.remove("hidden");
+            } else {
+            // Non-driver: disable hero button and hide nav link
+            heroOfferRideBtn?.setAttribute("disabled", true);
+            heroOfferRideBtn?.setAttribute("title", "Only drivers can offer rides");
+            navOfferRide?.classList.add("hidden");
+            }
+
+
+
+          } else {
+            // Not logged in - show login/signup only
+            loginLink.classList.remove("hidden");
+            signupLink.classList.remove("hidden");
+      
+            usernameGreeting.classList.add("hidden");
+            logoutBtn.classList.add("hidden");
+      
+            secondaryNav?.classList.remove("hidden");
+            authSection.classList.remove("hidden"); // Just in case
+          }
+      
+          // 🔽 Dropdown toggle for "Find Rides"
+          const dropdownButton = document.getElementById('dropdownButton');
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          const dropdownArrow = dropdownButton?.querySelector('svg');
+      
+          dropdownButton?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu?.classList.toggle('hidden');
+            dropdownArrow?.classList.toggle('rotate-180');
+          });
+      
+          document.addEventListener('click', (e) => {
+            if (!dropdownButton?.contains(e.target) && !dropdownMenu?.contains(e.target)) {
+              dropdownMenu?.classList.add('hidden');
+              dropdownArrow?.classList.remove('rotate-180');
+            }
+          });
+        });
+      
+        function logout() {
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          window.location.href = "login.html";
+        }
+      </script>
+      
+      
+      
+      
+
+    <!-- <script src="app.js"></script>   -->
+
+</body>
+</html>

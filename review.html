@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Ride - EcoRide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <img src="assets/logo.png" alt="EcoRide Logo" class="h-10 w-10">
+                        <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-20 pb-12">
+        <div class="max-w-2xl mx-auto px-4 py-8 bg-white shadow-lg rounded-lg">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Rate Your Ride</h2>
+            <form id="reviewForm" class="space-y-6">
+                <input type="hidden" id="ride_id" name="ride_id">
+                <input type="hidden" id="user_id" name="user_id">
+
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="rating">Rating (1-5)</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="comments">Comments</label>
+                    <textarea id="comments" name="comments" rows="4" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="How was your ride experience?"></textarea>
+                </div>
+
+                <div class="text-right">
+                    <button type="submit"
+                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg">Submit
+                        Review</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        window.onload = function () {
+            const bookingDetails = JSON.parse(localStorage.getItem("bookingDetails"));
+            const userData = JSON.parse(localStorage.getItem("user"));
+
+            if (bookingDetails && bookingDetails.ride_id && userData && userData.id) {
+                document.getElementById("ride_id").value = bookingDetails.ride_id;
+                document.getElementById("user_id").value = userData.id;
+            } else {
+                alert("⚠️ Missing ride or user info in local storage.");
+                window.location.href = "index.html";
+            }
+
+            document.getElementById("reviewForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const reviewData = {
+                    ride_id: document.getElementById("ride_id").value,
+                    user_id: document.getElementById("user_id").value,
+                    rating: document.getElementById("rating").value,
+                    comments: document.getElementById("comments").value
+                };
+
+                fetch("http://localhost:5000/reviews", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(reviewData)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    alert("✅ Review submitted!");
+                    // Optionally clear booking details after review
+                    localStorage.removeItem("bookingDetails");
+                    window.location.href = "index.html";
+                })
+                .catch(err => {
+                    alert("❌ Failed to submit review.");
+                    console.error(err);
+                });
+            });
+        };
+    </script>
+
+</body>
+
+</html>

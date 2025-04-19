@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CarPool</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!--NavBar-->
+<nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between h-16">
+            <!-- Logo and primary nav -->
+            <div class="flex items-center">
+                <a href="index.html" class="flex items-center">
+                    <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                    <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+                </a>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center ml-10 space-x-8">
+                    <div class="dropdown relative">
+                        <button id="dropdownButton" class="flex items-center text-gray-700 hover:text-blue-600">
+                            Find Rides
+                            <svg class="ml-1 w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div id="dropdownMenu" class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
+                            <a href="search-rides.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Search Rides</a>
+                            <a href="popular-routes.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Popular Routes</a>
+                        </div>
+                    </div>
+                    <a href="offer-ride.html" class="text-gray-700 hover:text-blue-600">Offer a Ride</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-blue-600">How it Works</a>
+                    <a href="help.html" class="text-gray-700 hover:text-blue-600">Help</a>
+                </div>
+            </div>
+
+            <div id="auth-section" class="hidden md:flex items-center space-x-4">
+                <a href="login.html" id="loginLink" class="text-gray-700 hover:text-blue-600">Login</a>
+                <a href="signup.html" id="signupLink" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
+              
+                <!-- Greeting with user icon -->
+                <span id="usernameGreeting" class="flex items-center gap-2 text-gray-700 hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5.121 17.804A4 4 0 017 16h10a4 4 0 011.879.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Hi, <span id="username-display" class="font-semibold text-blue-700"></span>
+                </span>
+              
+                <!-- Elegant Logout Button -->
+                <button onclick="logout()" id="logoutBtn"
+                  class="text-gray-600 hover:text-white hover:bg-red-500 px-3 py-1 rounded-md transition hidden text-sm">
+                  Logout
+                </button>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <button id="mobile-dropdown-button" class="flex items-center w-full px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">
+                Find Rides
+                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="mobile-dropdown-menu" class="hidden pl-4">
+                <a href="search-rides.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Search Rides</a>
+                <a href="popular-routes.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Popular Routes</a>
+                <a href="last-minute.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Last Minute</a>
+            </div>
+            <a href="offer-ride.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Offer a Ride</a>
+            <a href="how-it-works.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">How it Works</a>
+            <a href="help.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Help</a>
+            <div class="border-t border-gray-200 pt-2">
+                <a href="login.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Login</a>
+                <a href="signup.html" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <!-- Welcome Section -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+              <h1 class="text-2xl font-bold text-gray-900" id="welcomeMessage">Welcome back!</h1>
+              <p class="text-gray-600">Here's what's happening with your rides</p>
+            </div>
+          </div>
+          
+          <script>
+            const user = JSON.parse(localStorage.getItem("user"));
+          
+            if (user && user.name) {
+              document.getElementById("welcomeMessage").textContent = `Welcome back, ${user.name}!`;
+            }
+          </script>
+          
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                            <i class="fas fa-car text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-gray-600">Active Rides</h2>
+                            <p class="text-2xl font-bold text-gray-900" id="activeRidesCount">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-check-circle text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-gray-600">Total Rides</h2>
+                            <p class="text-2xl font-bold text-gray-900" id="completedRidesCount">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                            <i class="fas fa-clock text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-gray-600">Pending Rides</h2>
+                            <p class="text-2xl font-bold text-gray-900" id="pendingRidesCount">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <div class="flex items-center">
+                        <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                            <i class="fas fa-star text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-gray-600">Rating</h2>
+                            <p class="text-2xl font-bold text-gray-900" id="userRating">4.8</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rides Sections -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Upcoming Rides -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                  <h2 class="text-xl font-bold text-gray-900 mb-4">Upcoming Rides</h2>
+                  <div id="upcomingRides" class="space-y-4">
+                    <!-- Rides will be populated here -->
+                  </div>
+                </div>
+          
+                <!-- Offered Rides -->
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                  <h2 class="text-xl font-bold text-gray-900 mb-4">Your Offered Rides</h2>
+                  <div id="offeredRides" class="space-y-4">
+                    <!-- Rides will be populated here -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </main>
+
+ 
+
+<script>
+    
+    const dropdownButton = document.getElementById('dropdownButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const dropdownArrow = dropdownButton.querySelector('svg');
+
+    dropdownButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('active');
+        dropdownArrow.classList.toggle('rotate-180');
+    });
+
+   
+    document.addEventListener('click', (e) => {
+        if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.remove('active');
+            dropdownArrow.classList.remove('rotate-180');
+        }
+    });
+
+    // Mobile menu and dropdown
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileDropdownButton = document.getElementById('mobile-dropdown-button');
+    const mobileDropdownMenu = document.getElementById('mobile-dropdown-menu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileDropdownButton.addEventListener('click', () => {
+        mobileDropdownMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+</script>
+
+<!-- Footer -->
+<footer class="bg-gray-800 text-white pt-12 pb-8">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Company Info -->
+            <div class="space-y-4">
+                <div class="flex items-center">
+                    <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                    <span class="text-xl font-bold ml-2">EcoRide</span>
+                </div>
+                <p class="text-gray-400">Making travel more social, affordable, and sustainable.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">How it Works</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Popular Routes</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Support</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Safety Information</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Cancellation Options</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Community Guidelines</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bottom Footer -->
+        <div class="border-t border-gray-700 mt-8 pt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 text-sm">
+                    © 2025 CarPool. All rights reserved.
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <select class="bg-gray-700 text-gray-400 px-3 py-1 rounded-md">
+                        <option>English</option>
+                        <option>Español</option>
+                        <option>Français</option>
+                        <option>Deutsch</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const username = user?.name;
+      const driverId = user?.id;
+  
+      // DOM Elements
+      const loginLink = document.getElementById("loginLink");
+      const signupLink = document.getElementById("signupLink");
+      const usernameGreeting = document.getElementById("usernameGreeting");
+      const usernameDisplay = document.getElementById("username-display");
+      const logoutBtn = document.getElementById("logoutBtn");
+      const authSection = document.getElementById("auth-section");
+      const secondaryNav = document.querySelector(".secondary-nav");
+  
+      const welcomeMessage = document.getElementById("welcomeMessage");
+      const activeRidesCount = document.getElementById("activeRidesCount");
+      const completedRidesCount = document.getElementById("completedRidesCount");
+      const pendingRidesCount = document.getElementById("pendingRidesCount");
+      const userRating = document.getElementById("userRating");
+  
+      const upcomingRidesDiv = document.getElementById("upcomingRides");
+      const offeredRidesDiv = document.getElementById("offeredRides");
+  
+      if (username && driverId) {
+        // UI Setup
+        usernameDisplay.textContent = username;
+        usernameGreeting?.classList.remove("hidden");
+        logoutBtn?.classList.remove("hidden");
+        loginLink?.classList.add("hidden");
+        signupLink?.classList.add("hidden");
+        secondaryNav?.classList.add("hidden");
+        authSection?.classList.remove("hidden");
+        welcomeMessage.textContent = `Welcome back, ${username}!`;
+  
+        try {
+          // ✅ Correct API endpoint
+          const res = await fetch(`http://localhost:5000/api/drivers/${user.id}/stats`);
+          const stats = await res.json();
+  
+          activeRidesCount.textContent = stats.upcomingRides;
+          completedRidesCount.textContent = stats.ridesOffered;
+          pendingRidesCount.textContent = "0"; // Placeholder
+          userRating.textContent = "4.8"; // Static or fetch later
+  
+        } catch (error) {
+          console.error("Error fetching stats:", error);
+          activeRidesCount.textContent = 0;
+          completedRidesCount.textContent = 0;
+          pendingRidesCount.textContent = 0;
+          userRating.textContent = 0;
+        }
+  
+        // ❌ Removed dummy ride lists
+        // TODO: Fetch upcoming/offered rides from backend
+        upcomingRidesDiv.innerHTML = `<p class="text-gray-500">No upcoming rides available.</p>`;
+        offeredRidesDiv.innerHTML = `<p class="text-gray-500">No offered rides available.</p>`;
+      }
+  
+      // Logout
+      window.logout = function () {
+        localStorage.removeItem("user");
+        location.reload();
+        
+      };
+    });
+  </script>
+  
+  
+
+  
+
+    
+</body>
+</html>

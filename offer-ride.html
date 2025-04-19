@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer a Ride - EcoRide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    
+     <!--NavBar-->
+     <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <!-- Logo and primary nav -->
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center">
+                        <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                        <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+                    </a>
+                    <!-- Desktop Navigation -->
+                    <div class="hidden md:flex items-center ml-10 space-x-8">
+                        <div class="dropdown relative">
+                            <button id="dropdownButton" class="flex items-center text-gray-700 hover:text-blue-600">
+                                Find Rides
+                                <svg class="ml-1 w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div id="dropdownMenu" class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
+                                <a href="search-rides.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Search Rides</a>
+                                <a href="popular-routes.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Popular Routes</a>
+                            </div>
+                        </div>
+                        <a href="offer-ride.html" class="text-gray-700 hover:text-blue-600">Offer a Ride</a>
+                        <a href="index.html#how-it-works" class="text-gray-700 hover:text-blue-600">How it Works</a>
+                        <a href="help.html" class="text-gray-700 hover:text-blue-600">Help</a>
+                    </div>
+                </div>
+    
+                <div id="auth-section" class="hidden md:flex items-center space-x-4">
+                    <a href="login.html" id="loginLink" class="text-gray-700 hover:text-blue-600">Login</a>
+                    <a href="signup.html" id="signupLink" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
+                  
+                    <!-- Greeting with user icon -->
+                    <span id="usernameGreeting" class="flex items-center gap-2 text-gray-700 hidden">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M5.121 17.804A4 4 0 017 16h10a4 4 0 011.879.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      Hi, <span id="username-display" class="font-semibold text-blue-700"></span>
+                    </span>
+                  
+                    <!-- Elegant Logout Button -->
+                    <button onclick="logout()" id="logoutBtn"
+                      class="text-gray-600 hover:text-white hover:bg-red-500 px-3 py-1 rounded-md transition hidden text-sm">
+                      Logout
+                    </button>
+                </div>
+    
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button id="mobile-dropdown-button" class="flex items-center w-full px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">
+                    Find Rides
+                    <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="mobile-dropdown-menu" class="hidden pl-4">
+                    <a href="search-rides.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Search Rides</a>
+                    <a href="popular-routes.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Popular Routes</a>
+                    <a href="last-minute.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Last Minute</a>
+                </div>
+                <a href="offer-ride.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Offer a Ride</a>
+                <a href="index.html#how-it-works" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">How it Works</a>
+                <a href="help.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Help</a>
+                <div class="border-t border-gray-200 pt-2">
+                    <a href="login.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Login</a>
+                    <a href="signup.html" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <style>
+        .dropdown-menu.active {
+            display: block;
+        }
+        
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+    </style>
+    
+    
+    <!-- Offer Ride Form Section -->
+    <section class="pt-24 pb-12 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h1 class="text-3xl font-bold text-center mb-8">Offer a Ride</h1>
+            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+                <form class="space-y-6"  id = "offer-ride-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">From</label>
+                            <input id = "from_location" type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Enter departure city">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">To</label>
+                            <input id = "to_location" type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Enter destination city">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2">Date</label>
+                            <input id = "date" type="date" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2">Time</label>
+                            <input id="time" type="time" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2">Available Seats</label>
+                        <select id="seats_available" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2">Price per Seat</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2 text-gray-600">₹</span>
+                            <input id="price_per_seat" type="number" class="w-full pl-8 pr-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Enter price">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2">Vehicle Details</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <input id="vehicle_make" type="text" class="px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Make & Model">
+                            <input id ="license_plate" type="text" class="px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="License Plate">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-gray-700 mb-2">Additional Information</label>
+                        <textarea class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" rows="3" placeholder="Add any additional details about the ride"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                        Publish Ride
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+   <footer class="bg-gray-800 text-white pt-12 pb-8">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Company Info -->
+            <div class="space-y-4">
+                <div class="flex items-center">
+                    <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                    <span class="text-xl font-bold ml-2">EcoRide</span>
+                </div>
+                <p class="text-gray-400">Making travel more social, affordable, and sustainable.</p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">How it Works</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Popular Routes</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Blog</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Support</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Safety Information</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Cancellation Options</a></li>
+                </ul>
+            </div>
+
+            <!-- Legal -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Legal</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Cookie Policy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Community Guidelines</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bottom Footer -->
+        <div class="border-t border-gray-700 mt-8 pt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-400 text-sm">
+                    © 2025 CarPool. All rights reserved.
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <select class="bg-gray-700 text-gray-400 px-3 py-1 rounded-md">
+                        <option>English</option>
+                        <option>Español</option>
+                        <option>Français</option>
+                        <option>Deutsch</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    
+   
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdownButton = document.getElementById("dropdownButton");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+
+         const user = JSON.parse(localStorage.getItem("user"));
+          const username = user?.name;
+
+    if (dropdownButton && dropdownMenu) {
+        const dropdownArrow = dropdownButton.querySelector("svg");
+
+        dropdownButton.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle("active");
+            dropdownArrow.classList.toggle("rotate-180");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.remove("active");
+                dropdownArrow.classList.remove("rotate-180");
+            }
+        });
+    }
+
+    // Elements
+          const loginLink = document.getElementById("loginLink");
+          const signupLink = document.getElementById("signupLink");
+          const usernameGreeting = document.getElementById("usernameGreeting");
+          const usernameDisplay = document.getElementById("username-display");
+          const logoutBtn = document.getElementById("logoutBtn");
+          const authSection = document.getElementById("auth-section");
+          const secondaryNav = document.querySelector(".secondary-nav");
+
+    // Mobile menu and dropdown
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const mobileDropdownButton = document.getElementById("mobile-dropdown-button");
+    const mobileDropdownMenu = document.getElementById("mobile-dropdown-menu");
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener("click", () => {
+            mobileMenu.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                mobileMenu.classList.add("hidden");
+            }
+        });
+    }
+
+    if (mobileDropdownButton && mobileDropdownMenu) {
+        mobileDropdownButton.addEventListener("click", () => {
+            mobileDropdownMenu.classList.toggle("hidden");
+        });
+    }
+
+    if (username) {
+            // Show "Hi, username" and Logout
+            usernameDisplay.textContent = username;
+            usernameGreeting.classList.remove("hidden");
+            logoutBtn.classList.remove("hidden");
+      
+            // Hide login & signup
+            loginLink.classList.add("hidden");
+            signupLink.classList.add("hidden");
+      
+            // Hide secondary nav if it exists
+            secondaryNav?.classList.add("hidden");
+      
+            // Show the whole auth section
+            authSection.classList.remove("hidden");
+        } else {
+            // Not logged in - show login/signup only
+            loginLink.classList.remove("hidden");
+            signupLink.classList.remove("hidden");
+      
+            usernameGreeting.classList.add("hidden");
+            logoutBtn.classList.add("hidden");
+      
+            secondaryNav?.classList.remove("hidden");
+            authSection.classList.remove("hidden"); // Just in case
+          }
+
+    // Offer Ride Form Submission
+    const offerRideForm = document.getElementById("offer-ride-form");
+
+    if (offerRideForm) {
+        offerRideForm.addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent form reload
+
+            const source = document.getElementById("from_location")?.value.trim();
+            const destination = document.getElementById("to_location")?.value.trim();
+            const date = document.getElementById("date")?.value;
+            const time = document.getElementById("time")?.value;
+            const available_seats = document.getElementById("seats_available")?.value;
+            const price_per_seat = document.getElementById("price_per_seat")?.value;
+            const vehicle_model = document.getElementById("vehicle_make")?.value.trim();
+            const license_plate = document.getElementById("license_plate")?.value.trim();
+
+            // Basic validation
+            // if (!source || !destination || !available_seats || !price_per_seat || !vehicle_model || !license_plate) {
+            //     alert("Please fill in all required fields.");
+            //     return;
+            // }
+
+            const start_time = `${date} ${time}:00`;
+
+
+            try {
+                const token = localStorage.getItem("token"); 
+
+                if (!token) {
+                    alert("User not authenticated. Please log in.");
+                    return;
+                }
+                const response = await fetch("http://localhost:5000/api/rides", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                    body: JSON.stringify({
+                        source,
+                        destination,
+                        start_time,
+                        available_seats,
+                        price_per_seat,
+                        vehicle_model,
+                        license_plate,
+                    }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Ride offered successfully!");
+                    window.location.href = "dashboard.html"; // Redirect after success
+                } else {
+                    alert(data.message || "Error offering ride. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong. Please try again later.");
+            }
+        });
+    }
+});
+
+function logout() {
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          window.location.href = "login.html";
+        }
+</script>
+
+</body>
+</html>
