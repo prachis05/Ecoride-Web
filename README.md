@@ -11,22 +11,11 @@ EcoRide is a web-based carpooling platform designed to promote eco-friendly comm
 ✅ Interactive UI with Bootstrap-based design  
 ✅ Backend powered by Node.js and Express  
 
-## 📂 **Project Structure**  
-```
-EcoRide/
-│── frontend/            # Frontend files (HTML, CSS, JS)
-│   ├── assets/         # Images, logos, icons
-│   ├── index.html      # Homepage
-│   ├── app.js         # Main JavaScript logic
-│── server.js           # Backend API (Node.js, Express)
-│── package.json        # Dependencies and scripts
-│── README.md           # Project documentation
-```
 
 ## 🚀 **Installation & Setup**  
 1️⃣ **Clone the repository**  
 ```sh
-git clone https://github.com/prachis05/EcoRide.git
+git clone https://github.com/prachis05/EcoRide-Web.git
 cd EcoRide
 ```
 2️⃣ **Install dependencies**  
@@ -35,10 +24,10 @@ npm install
 ```
 3️⃣ **Start the server**  
 ```sh
-node server.js
+node index.js
 ```
 4️⃣ **Open in browser**  
-Visit `http://localhost:3000`
+Visit `http://localhost:5000`
 
 ## 📜 **License**  
 This project is open-source and available under the MIT License.  
