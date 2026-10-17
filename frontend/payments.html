@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment - EcoRide</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet" />
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body class="bg-gray-100">
+  <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <a href="index.html" class="flex items-center">
+            <img src="assets/logo.png" alt="EcoRide Logo" class="h-10 w-10" />
+            <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pt-20 pb-12">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">Confirm and Pay</h2>
+      <div class="bg-white shadow-md rounded-lg p-6 mb-6" id="rideInfo">
+        <h3 class="text-lg font-semibold text-gray-700">Ride Details</h3>
+        <p class="text-gray-600">From: <span id="source" class="font-medium"></span></p>
+        <p class="text-gray-600">To: <span id="destination" class="font-medium"></span></p>
+        <p class="text-gray-600">Seats: <span id="seats" class="font-medium"></span></p>
+        <p class="text-gray-600">Total Price: <span id="totalPrice" class="font-bold text-gray-900"></span></p>
+      </div>
+      <div class="text-right">
+        <button onclick="processPayment()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg">
+          Confirm and Pay
+        </button>
+      </div>
+    </div>
+  </main>
+  <script>
+    const bookingDetails = JSON.parse(localStorage.getItem("bookingDetails")) || {};
+    document.getElementById("source").textContent = bookingDetails.source || "-";
+    document.getElementById("destination").textContent = bookingDetails.destination || "-";
+    document.getElementById("seats").textContent = bookingDetails.seats_booked || "-";
+    document.getElementById("totalPrice").textContent = `₹${bookingDetails.total_price || 0}`;
+  
+    function processPayment() {
+      const bookingDetails = JSON.parse(localStorage.getItem("bookingDetails"));
+      const userData = JSON.parse(localStorage.getItem("user"));
+      const driver = JSON.parse(localStorage.getItem("selectedDriver"));
+  
+      if (!bookingDetails || !bookingDetails.booking_id || !bookingDetails.ride_id || !userData || !userData.id) {
+        alert("⚠️ Missing booking or user information. Please try again.");
+        return;
+      }
+  
+      const amount = bookingDetails.total_price;
+      const ride_id = bookingDetails.ride_id;
+      const user_id = userData.id;
+      const bookingId = bookingDetails.booking_id;
+  
+      fetch("http://localhost:5000/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ amount: amount })
+      })
+      .then(response => response.json())
+      .then(order => {
+        const options = {
+          key: "rzp_test_JpG9QVHnUFDmYk",
+          amount: order.amount,
+          currency: order.currency,
+          name: "EcoRide",
+          description: "Ride Payment",
+          order_id: order.id,
+          handler: function (response) {
+            fetch("http://localhost:5000/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                bookingId: bookingId,
+                amount: amount,
+                ride_id: ride_id,
+                user_id: user_id
+              }),
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                let driverInfo = "";
+                if (driver) {
+                  driverInfo = 
+                    `\n🚖 Driver Details:\n` +
+                    `👤 Name: ${driver.driver_name}\n📞 Phone: ${driver.driver_phone}`;
+                } else {
+                  driverInfo = `\n⚠️ Driver details not available.`;
+                }
+  
+                alert(
+                  `✅ Payment Successful!\n` +
+                  `📍 From: ${bookingDetails.source}\n` +
+                  `📍 To: ${bookingDetails.destination}\n` +
+                  `🕒 Time: ${bookingDetails.ride_time}, ${bookingDetails.ride_date}\n` +
+                  driverInfo
+                );
+  
+                // Optional: clear storage
+                localStorage.removeItem("driverDetails");
+                
+  
+                window.location.href = `review.html?ride_id=${ride_id}&user_id=${user_id}`;
+              } else {
+                alert("❌ Payment Failed!");
+              }
+            });
+          },
+          theme: { color: "#3399cc" }
+        };
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+      });
+    }
+  </script>
+  
+    
+    
+</body>
+
+</html>

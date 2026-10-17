@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - EcoRide</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </head>
 <body class="bg-gray-50">
     
@@ -31,7 +33,7 @@
             <div class="flex justify-between h-16">
                 <!-- Logo and primary nav -->
                 <div class="flex items-center">
-                    <a href="/" class="flex items-center">
+                    <a href="index.html" class="flex items-center">
                         <img src="assets\logo.png" alt="CarPool Logo" class="h-10 w-10">
                         <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
                     </a>
@@ -58,8 +60,8 @@
 
                 <!-- Secondary Nav -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="#" class="text-gray-700 hover:text-blue-600">Login</a>
-                    <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
+                    <a href="login.html" class="text-gray-700 hover:text-blue-600">Login</a>
+                    <a href="signup.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
                 </div>
 
                 <!-- Mobile menu button -->
@@ -145,4 +147,70 @@
         </div>
     </div>
 </body>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+    event.preventDefault();  // Prevent form from reloading the page
+    
+        // Get form values
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        if (!email || !password) {
+        alert('Please fill in both email and password.');
+        return;
+    }
+    
+        try {
+            // Send POST request to backend
+            const response = await fetch('http://localhost:5000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password })  // Sending email & password
+            });
+    
+            const data = await response.json(); 
+            console.log("Login Response:", data);
+            
+    
+            if (data.success) {
+                // Login successful
+                if (data.user.role == 'Driver'){
+                    
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    
+                    alert('Login successful!');
+
+                    window.location.href = 'dashboard.html';
+                }else if (data.user.role == 'Rider'){
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("user");
+
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("user", JSON.stringify(data.user));
+                    alert('Login successful!');
+                    
+                    window.location.href = 'index.html';
+                }else{
+                    alert("Unknown role, cannot redirect")
+                }
+                
+        
+            } else {
+                // Login failed
+                alert(data.message || 'Invalid credentials. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Something went wrong. Please try again later.');
+        }
+    });
+    </script>
+    
+  
 </html>

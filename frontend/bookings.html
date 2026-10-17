@@ -1,0 +1,274 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Book Ride - EcoRide</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    </head>
+    <body class="bg-gray-50">
+        <!-- Navigation (Same as Offer Ride page) -->
+        <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex justify-between h-16">
+                    <div class="flex items-center">
+                        <a href="index.html" class="flex items-center">
+                            <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                            <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div id="auth-section" class="hidden md:flex items-center space-x-4">
+            <a href="login.html" id="loginLink" class="text-gray-700 hover:text-blue-600">Login</a>
+            <a href="signup.html" id="signupLink" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
+          
+            <!-- Greeting with user icon -->
+            <span id="usernameGreeting" class="flex items-center gap-2 text-gray-700 hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M5.121 17.804A4 4 0 017 16h10a4 4 0 011.879.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Hi, <span id="username-display" class="font-semibold text-blue-700"></span>
+            </span>
+          
+            <!-- Elegant Logout Button -->
+            <button onclick="logout()" id="logoutBtn"
+              class="text-gray-600 hover:text-white hover:bg-red-500 px-3 py-1 rounded-md transition hidden text-sm">
+              Logout
+            </button>
+        </div>
+
+        <!-- Booking Form Section -->
+        <section class="pt-24 pb-12">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Passenger Details</h1>
+                    
+                    <form id="booking-form" class="space-y-6">
+                        <!-- Ride Details Section -->
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h2 class="text-xl font-semibold mb-4 text-blue-800">Ride Information</h2>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2">From</label>
+                                    <input type="text" id="source" class="w-full px-4 py-2 border rounded-lg" readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2">To</label>
+                                    <input type="text" id="destination" class="w-full px-4 py-2 border rounded-lg" readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Date</label>
+                                    <input type="text" id="ride-date" class="w-full px-4 py-2 border rounded-lg" readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Time</label>
+                                    <input type="text" id="ride-time" class="w-full px-4 py-2 border rounded-lg" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Passenger Details Section -->
+                        <div>
+                            <h2 class="text-xl font-semibold mb-4 text-gray-800">Passenger Information</h2>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Full Name</label>
+                                    <input type="text" id="full-name" class="w-full px-4 py-2 border rounded-lg" required>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Gender</label>
+                                    <select id="gender" class="w-full px-4 py-2 border rounded-lg" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div>
+                            <h2 class="text-xl font-semibold mb-4 text-gray-800">Contact Details</h2>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Email Address</label>
+                                    <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg" required>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2">Phone Number</label>
+                                    <input type="tel" id="phone" class="w-full px-4 py-2 border rounded-lg" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ID Proof Section -->
+                        <div>
+                            <h2 class="text-xl font-semibold mb-4 text-gray-800">ID Verification</h2>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-gray-700 mb-2">ID Type</label>
+                                    <select id="id-type" class="w-full px-4 py-2 border rounded-lg" required>
+                                        <option value="">Select ID Type</option>
+                                        <option value="aadhar">Aadhar Card</option>
+                                        <option value="passport">Passport</option>
+                                        <option value="driver-license">Driver's License</option>
+                                        <option value="voter-id">Voter ID</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2">ID Number</label>
+                                    <input type="text" id="id-number" class="w-full px-4 py-2 border rounded-lg" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seat and Price Details -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <p class="text-lg font-semibold">Seat(s) Booked</p>
+                                    <p id="seats-booked" class="text-gray-600">1 Seat</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-lg font-semibold">Total Price</p>
+                                    <p id="total-price" class="text-blue-600 text-xl">₹ 0</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pay Now Button -->
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                            Proceed to Payment
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              const bookingForm = document.getElementById('booking-form');
+          
+              // Get ride details from localStorage
+              const selectedRide = JSON.parse(localStorage.getItem('selectedDriver'));
+          
+              if (!selectedRide) {
+                alert("No ride selected. Please go back and choose a ride.");
+                return;
+              }
+          
+              const {
+                ride_id,
+                source,
+                destination,
+                driver_name,
+                driver_phone,
+                time: rideTime,
+                price_per_seat,
+                seats
+              } = selectedRide;
+          
+              // Format the date and time
+              let formattedDate = '';
+              let formattedTime = '';
+              if (rideTime) {
+                const rideDateTime = new Date(rideTime);
+                formattedDate = rideDateTime.toLocaleDateString();
+                formattedTime = rideDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+              }
+          
+              // Populate ride details
+              document.getElementById('source').value = source || '';
+              document.getElementById('destination').value = destination || '';
+              document.getElementById('ride-date').value = formattedDate;
+              document.getElementById('ride-time').value = formattedTime;
+          
+              const seatsBooked = 1;
+              document.getElementById('seats-booked').textContent = seatsBooked + ' Seat' + (seatsBooked > 1 ? 's' : '');
+          
+              const totalPrice = price_per_seat ? (parseFloat(price_per_seat) * seatsBooked) : 0;
+              document.getElementById('total-price').textContent = '₹ ' + totalPrice;
+          
+              bookingForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+          
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalButtonText = submitButton.textContent;
+                submitButton.textContent = 'Processing...';
+                submitButton.disabled = true;
+          
+                try {
+                  const token = localStorage.getItem('token');
+                  if (!token) {
+                    throw new Error('Authentication required. Please log in.');
+                  }
+          
+                  const idTypeMap = {
+                    'aadhar': 1,
+                    'passport': 2,
+                    'driver-license': 3,
+                    'voter-id': 4
+                  };
+                  const idTypeId = idTypeMap[document.getElementById('id-type').value] || null;
+          
+                  const bookingData = {
+                    ride_id: parseInt(ride_id),
+                    seats_booked: seatsBooked,
+                    total_price: totalPrice,
+                    booking_status: 'PENDING',
+                    id_type_id: idTypeId,
+                    id_number: document.getElementById('id-number').value,
+                    gender: document.getElementById('gender').value
+                  };
+          
+                  const extendedData = {
+                    ...bookingData,
+                    passenger_name: document.getElementById('full-name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    source,
+                    destination,
+                    ride_date: formattedDate,
+                    ride_time: formattedTime,
+                    driver_name,
+                    driver_phone
+                  };
+          
+                  const response = await fetch('http://localhost:5000/api/bookings', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(bookingData)
+                  });
+          
+                  if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Failed to create booking');
+                  }
+          
+                  const result = await response.json();
+                  extendedData.booking_id = result.booking_id || result.booking?.booking_id || result.id;
+          
+                  localStorage.setItem('bookingDetails', JSON.stringify(extendedData));
+          
+                  window.location.href = 'payments.html';
+                } catch (error) {
+                  console.error('Booking error:', error);
+                  alert('Error: ' + error.message);
+                  submitButton.textContent = originalButtonText;
+                  submitButton.disabled = false;
+                }
+              });
+            });
+          </script>
+          
+    </body>
+    </html>

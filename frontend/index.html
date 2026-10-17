@@ -8,85 +8,108 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <!--NavBar-->
-    <style>
-        .dropdown:hover .dropdown-menu {
-            display: block;
-        }
-        
-        .mobile-menu {
-            transition: transform 0.3s ease-in-out;
-            transform: translateX(-100%);
-        }
-        
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-    </style>
-</head>
-<body>
-    <!-- Navigation -->
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between h-16">
-                <!-- Logo and primary nav -->
-                <div class="flex items-center">
-                    <a href="/" class="flex items-center">
-                        <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
-                        <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
-                    </a>
-                    <!-- Desktop Navigation -->
-                    <div class="hidden md:flex items-center ml-10 space-x-8">
-                        <div class="dropdown relative group">
-                            <button class="flex items-center text-gray-700 hover:text-blue-600">
-                                Find Rides
-                                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                                </svg>
-                            </button>
-                            <div class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block">
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Search Rides</a>
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Popular Routes</a>
-                                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Last Minute</a>
-                            </div>
+
+   <!--NavBar-->
+<nav class="bg-white shadow-lg fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between h-16">
+            <!-- Logo and primary nav -->
+            <div class="flex items-center">
+                <a href="/frontend/index.html" class="flex items-center">
+                    <img src="assets/logo.png" alt="CarPool Logo" class="h-10 w-10">
+                    <span class="text-xl font-bold text-blue-600 ml-2">EcoRide</span>
+                </a>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center ml-10 space-x-8">
+                    <div class="dropdown relative">
+                        <button id="dropdownButton" class="flex items-center text-gray-700 hover:text-blue-600">
+                            Find Rides
+                            <svg class="ml-1 w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div id="dropdownMenu" class="dropdown-menu absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
+                            <a href="search-rides.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Search Rides</a>
+                            <a href="popular-routes.html" class="block px-4 py-2 text-gray-700 hover:bg-blue-50">Popular Routes</a>
                         </div>
-                        <a href="#" class="text-gray-700 hover:text-blue-600">Offer a Ride</a>
-                        <a href="#" class="text-gray-700 hover:text-blue-600">How it Works</a>
-                        <a href="#" class="text-gray-700 hover:text-blue-600">Help</a>
                     </div>
-                </div>
-
-                <!-- Secondary Nav -->
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="login.html" class="text-gray-700 hover:text-blue-600">Login</a>
-                    <a href="signup.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
-                </div>
-
-                <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
+                    <a href="offer-ride.html" id="navOfferRide" class="text-gray-700 hover:text-blue-600 hidden">Offer a Ride</a>
+                    <a href="#how-it-works" class="text-gray-700 hover:text-blue-600">How it Works</a>
+                    <a href="help.html" class="text-gray-700 hover:text-blue-600">Help</a>
                 </div>
             </div>
-        </div>
 
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
-            <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Find Rides</a>
-                <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Offer a Ride</a>
-                <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">How it Works</a>
-                <a href="#" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Help</a>
-                <div class="border-t border-gray-200 pt-2">
-                    <a href="login.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Login</a>
-                    <a href="signup.html" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Sign Up</a>
-                </div>
+            
+
+            <div id="auth-section" class="hidden md:flex items-center space-x-4">
+                <a href="login.html" id="loginLink" class="text-gray-700 hover:text-blue-600">Login</a>
+                <a href="signup.html" id="signupLink" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Sign Up</a>
+              
+                <!-- Greeting with user icon -->
+                <span id="usernameGreeting" class="flex items-center gap-2 text-gray-700 hidden">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5.121 17.804A4 4 0 017 16h10a4 4 0 011.879.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Hi, <span id="username-display" class="font-semibold text-blue-700"></span>
+                </span>
+              
+                <!-- Elegant Logout Button -->
+                <button onclick="logout()" id="logoutBtn"
+                  class="text-gray-600 hover:text-white hover:bg-red-500 px-3 py-1 rounded-md transition hidden text-sm">
+                  Logout
+                </button>
+            </div>
+              
+              
+              
+            
+
+            <!-- Mobile menu button -->
+            <div class="md:hidden flex items-center">
+                <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
             </div>
         </div>
-    </nav>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+            <button id="mobile-dropdown-button" class="flex items-center w-full px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">
+                Find Rides
+                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+            <div id="mobile-dropdown-menu" class="hidden pl-4">
+                <a href="search-rides.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Search Rides</a>
+                <a href="popular-routes.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Popular Routes</a>
+                <a href="last-minute.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Last Minute</a>
+            </div>
+            <a href="offer-ride.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Offer a Ride</a>
+            <a href="how-it-works.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">How it Works</a>
+            <a href="help.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Help</a>
+            <div class="border-t border-gray-200 pt-2">
+                <a href="login.html" class="block px-3 py-2 text-gray-700 hover:bg-blue-50 rounded-md">Login</a>
+                <a href="signup.html" class="block px-3 py-2 bg-blue-600 text-white rounded-md mt-2">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .dropdown-menu.active {
+        display: block;
+    }
+    
+    .rotate-180 {
+        transform: rotate(180deg);
+    }
+</style>
 
     <!-- Hero Section -->
     <section class="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
@@ -100,20 +123,25 @@
                         Join thousands of travelers who trust EcoRide for safe, affordable, and eco-friendly rides across the country.
                     </p>
                     <div class="space-x-4">
-                        <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition">
-                            Find a Ride
-                        </button>
-                        <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
-                            Offer a Ride
-                        </button>
+                        <a href="search-rides.html">
+                            <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition">
+                                Find a Ride
+                            </button>
+                        </a>
+                        <a href="offer-ride.html" id="heroOfferRideLink">
+                            <button id="heroOfferRideBtn" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition">
+                                Offer a Ride
+                            </button>
+                        </a>
                     </div>
                 </div>
                 <div class="flex justify-center">
-                    <img src="assets/carpool-bg11.jpg" alt="Carpooling illustration" class="rounded-lg shadow-xl">
+                    <img src="assets/carpool-bg.jpg" alt="Carpooling illustration" class="rounded-lg shadow-xl">
                 </div>
             </div>
         </div>
     </section>
+    
 
     <!-- Benefits Section -->
     <section class="py-20 bg-white">
@@ -152,9 +180,9 @@
     </section>
 
     <!-- How It Works -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-20 bg-gray-50" id="how-it-works">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">How EcoRide:CarPool Works</h2>
+            <h2 class="text-3xl font-bold text-center mb-12">How EcoRide Works</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div class="relative">
                     <div class="text-center">
@@ -327,21 +355,94 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
+        document.addEventListener("DOMContentLoaded", function () {
+          const user = JSON.parse(localStorage.getItem("user"));
+          const username = user?.name;
+      
+          // Elements
+          const loginLink = document.getElementById("loginLink");
+          const signupLink = document.getElementById("signupLink");
+          const usernameGreeting = document.getElementById("usernameGreeting");
+          const usernameDisplay = document.getElementById("username-display");
+          const logoutBtn = document.getElementById("logoutBtn");
+      
+          const authSection = document.getElementById("auth-section");
+          const secondaryNav = document.querySelector(".secondary-nav");
+      
+          if (username) {
+            // Show "Hi, username" and Logout
+            usernameDisplay.textContent = username;
+            usernameGreeting.classList.remove("hidden");
+            logoutBtn.classList.remove("hidden");
+      
+            // Hide login & signup
+            loginLink.classList.add("hidden");
+            signupLink.classList.add("hidden");
+      
+            // Hide secondary nav if it exists
+            secondaryNav?.classList.add("hidden");
+      
+            // Show the whole auth section
+            authSection.classList.remove("hidden");
 
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
-                mobileMenu.classList.add('hidden');
+              // Role-based button/link logic
+           if (user?.role === "Driver") {
+            // Enable button and keep nav link visible
+            heroOfferRideBtn?.removeAttribute("disabled");
+            heroOfferRideBtn?.removeAttribute("title");
+            navOfferRide?.classList.remove("hidden");
+            } else {
+            // Non-driver: disable hero button and hide nav link
+            heroOfferRideBtn?.setAttribute("disabled", true);
+            heroOfferRideBtn?.setAttribute("title", "Only drivers can offer rides");
+            navOfferRide?.classList.add("hidden");
             }
+
+
+
+          } else {
+            // Not logged in - show login/signup only
+            loginLink.classList.remove("hidden");
+            signupLink.classList.remove("hidden");
+      
+            usernameGreeting.classList.add("hidden");
+            logoutBtn.classList.add("hidden");
+      
+            secondaryNav?.classList.remove("hidden");
+            authSection.classList.remove("hidden"); // Just in case
+          }
+      
+          // 🔽 Dropdown toggle for "Find Rides"
+          const dropdownButton = document.getElementById('dropdownButton');
+          const dropdownMenu = document.getElementById('dropdownMenu');
+          const dropdownArrow = dropdownButton?.querySelector('svg');
+      
+          dropdownButton?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu?.classList.toggle('hidden');
+            dropdownArrow?.classList.toggle('rotate-180');
+          });
+      
+          document.addEventListener('click', (e) => {
+            if (!dropdownButton?.contains(e.target) && !dropdownMenu?.contains(e.target)) {
+              dropdownMenu?.classList.add('hidden');
+              dropdownArrow?.classList.remove('rotate-180');
+            }
+          });
         });
-    </script>
-    <script src="app.js"></script>
+      
+        function logout() {
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
+          window.location.href = "login.html";
+        }
+      </script>
+      
+      
+      
+      
+
+    <!-- <script src="app.js"></script>   -->
+
 </body>
 </html>

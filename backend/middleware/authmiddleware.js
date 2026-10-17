@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-// Verify JWT Token Middleware
+// ✅ Verify JWT Token Middleware
 exports.verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -10,9 +10,12 @@ exports.verifyToken = (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
+  console.log("Token:", token);
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded JWT:", decoded); // 🔥 Debug log
+
     req.user = decoded; // Attach user info to request object
     next();
   } catch (err) {
@@ -20,9 +23,10 @@ exports.verifyToken = (req, res, next) => {
   }
 };
 
-// Check if User is Driver Middleware
+// ✅ Check if User is Driver Middleware
 exports.verifyDriver = (req, res, next) => {
-  if (req.user.role !== "driver") {
+  console.log("User in verifyDriver:", req.user);
+  if (req.user.role !== "Driver") {
     return res.status(403).json({ error: "Access denied. Only drivers can perform this action." });
   }
   next();

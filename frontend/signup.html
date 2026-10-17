@@ -24,8 +24,7 @@
             transform: translateX(0);
         }
     </style>
-</head>
-<body>
+
     <!-- Navigation -->
     <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4">
@@ -118,8 +117,37 @@
                     <div>
                         <label for="confirmPassword" class="sr-only">Confirm Password</label>
                         <input id="confirmPassword" name="confirmPassword" type="password" required 
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
                             placeholder="Confirm Password">
+                    </div>
+                    <div>
+                        <label for="phone" class="sr-only">Phone</label>
+                        <input id="phone" name="phone" type="text" 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="Phone (optional)">
+                    </div>
+                    <div>
+                        <label for="address" class="sr-only">Address</label>
+                        <input id="address" name="address" type="text" 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="Address (optional)">
+                    </div>
+                    <div>
+                        <label for="role" class="sr-only">Role</label>
+                        <select id="role" name="role" required
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm">
+                            <option value="">Select Role</option>
+                            <option value="Driver">Driver</option>
+                            <option value="Rider">Rider</option>
+                        </select>
+                    </div>
+                    
+                    <div id="licenseField" style="display: none;">
+                        <label for="licenseNumber" class="sr-only">License Number (e.g., MH12-20150012345):</label>
+                        <input id="licenseNumber" name="licenseNumber" type="text" 
+                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
+                            placeholder="SS99-YYYYNNNNNNN", maxlength="16">
+                        <small>Format: SS99-YYYYNNNNNNN</small>
                     </div>
                 </div>
 
@@ -150,4 +178,63 @@
         </div>
     </div>
 </body>
+<script>
+    document.getElementById('role').addEventListener('change', function() {
+        const licenseField = document.getElementById('licenseField');
+        if (this.value === 'Driver') {
+            licenseField.style.display = 'block';
+            licenseInput.setAttribute('required', 'required');
+        } else {
+            licenseField.style.display = 'none';
+            licenseInput.removeAttribute('required');
+        }
+        
+    });
+    document.getElementById('signupForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const userData = {
+            name: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value,
+            role: document.getElementById('role').value,
+            password: document.getElementById('password').value,
+            
+            
+        };
+
+        if (userData.role === 'Driver') {
+            userData.license_number = document.getElementById('licenseNumber').value;
+        }
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+        try {
+            const response = await fetch('http://localhost:5000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            });
+
+            if (response.ok) {
+                alert('Signup successful! Redirecting to login...');
+                window.location.href = 'login.html';
+            } else {
+                const result = await response.json();
+                alert(`Error: ${result.message}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        }
+    });
+</script>
 </html>

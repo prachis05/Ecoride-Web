@@ -1,7 +1,7 @@
 // frontend/js/app.js
 
 // API Base URL
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'http://localhost:5000/api';
 
 // Utility Functions
 const getToken = () => localStorage.getItem('token');
@@ -35,40 +35,40 @@ const api = {
 
 
 // Authentication Functions
-const auth = {
-    async login(credentials) {
-        try {
-            const data = await api.request('/auth/login', {
-                method: 'POST',
-                body: JSON.stringify(credentials)
-            });
-            setToken(data.token);
-            window.location.href = '/frontend/dashboard.html';
-        } catch (error) {
-            alert(error.message || 'Login failed');
-            throw error;
-        }
-    },
+// const auth = {
+//     async login(credentials) {
+//         try {
+//             const data = await api.request('/auth/login', {
+//                 method: 'POST',
+//                 body: JSON.stringify(credentials)
+//             });
+//             setToken(data.token);
+//             window.location.href = '/frontend/dashboard.html';
+//         } catch (error) {
+//             alert(error.message || 'Login failed');
+//             throw error;
+//         }
+//     },
 
-    async signup(userData) {
-        try {
-            await api.request('/auth/signup', {
-                method: 'POST',
-                body: JSON.stringify(userData)
-            });
-            alert('Signup successful! Please login.');
-            window.location.href = '/frontend/login.html';
-        } catch (error) {
-            alert(error.message || 'Signup failed');
-            throw error;
-        }
-    },
+//     async signup(userData) {
+//         try {
+//             await api.request('/auth/signup', {
+//                 method: 'POST',
+//                 body: JSON.stringify(userData)
+//             });
+//             alert('Signup successful! Please login.');
+//             window.location.href = '/frontend/login.html';
+//         } catch (error) {
+//             alert(error.message || 'Signup failed');
+//             throw error;
+//         }
+//     },
 
-    logout() {
-        removeToken();
-        window.location.href = '/frontend/login.html';
-    }
-};
+//     logout() {
+//         removeToken();
+//         window.location.href = '/frontend/login.html';
+//     }
+// };
 
 // Ride Functions
 const rides = {
