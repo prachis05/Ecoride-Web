@@ -61,22 +61,26 @@ jobs:
           docker tag ecoride-backend:ci "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
+   
       - name: Configure SSH
         if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          EC2_HOST: ${{ vars.EC2_HOST }}
         run: |
           set -eu
           mkdir -p ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/ec2_key
           chmod 600 ~/.ssh/ec2_key
+
           echo "Checking SSH port 22..."
-	  nc -vz -w 10 "${{ vars.EC2_HOST }}" 22
+          nc -vz -w 10 "$EC2_HOST" 22
 
-	  echo "Collecting SSH host key..."
-	  ssh-keyscan -T 10 -t ed25519,rsa "${{ vars.EC2_HOST }}" >> 	   	~/.ssh/known_hosts
+          echo "Collecting SSH host key..."
+          ssh-keyscan -T 10 -t ed25519,rsa "$EC2_HOST" >> ~/.ssh/known_hosts
 
-	test -s ~/.ssh/known_hosts
+          test -s ~/.ssh/known_hosts
+
 
       - name: Test SSH connection
         if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
