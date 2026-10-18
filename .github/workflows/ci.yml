@@ -70,7 +70,13 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/ec2_key
           chmod 600 ~/.ssh/ec2_key
-          ssh-keyscan -H "${{ vars.EC2_HOST }}" >> ~/.ssh/known_hosts
+          echo "Checking SSH port 22..."
+	  nc -vz -w 10 "${{ vars.EC2_HOST }}" 22
+
+	  echo "Collecting SSH host key..."
+	  ssh-keyscan -T 10 -t ed25519,rsa "${{ vars.EC2_HOST }}" >> 	   	~/.ssh/known_hosts
+
+	test -s ~/.ssh/known_hosts
 
       - name: Test SSH connection
         if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
