@@ -1,0 +1,15 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+    image: ecoride-backend:compose
+    container_name: ecoride-backend-compose
+    ports:
+      - "5001:5000"
+    env_file:
+      - ./backend/.env
+    environment:
+      DB_HOST: host.docker.internal
+      PORT: "5000"
+    restart: unless-stopped
