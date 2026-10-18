@@ -9,7 +9,7 @@ const Razorpay = require("razorpay");
 const crypto = require('crypto');
 const reviewRoutes = require("./routes/review");
 const driverRoutes = require("./routes/driver");
-
+const healthRoutes = require("./routes/health");
 
 
 const app = express();
@@ -18,7 +18,7 @@ app.use(cors());
 
 // MySQL Connection
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOST || "localhost",
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
@@ -95,6 +95,8 @@ app.post("/create-order", async (req, res) => {
 
 
 // Routes
+app.use("/health", healthRoutes);
+
 app.use("/api", authRoutes);
 console.log("Rides loading")
 app.use("/api/rides", rideRoutes);
@@ -111,5 +113,10 @@ app.get("/", (req, res) => {
 });
 
 // Start Server
-const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Start Server only when this file is executed directly
+if (require.main === module) {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+module.exports = app;
