@@ -1,4 +1,5 @@
 const db = require('../db');
+const promiseDb = db.promiseDb;
 
 // Controller for handling booking operations
 const BookingsController = {
@@ -86,11 +87,11 @@ const BookingsController = {
     const { user_id } = req.params;
 
     try {
-      const [rows] = await db.execute(
+      const [rows] = await promiseDb.execute(
         `SELECT b.*, r.source, r.destination, r.start_time, r.price_per_seat,
          u.name as driver_name
          FROM bookings b
-         JOIN rides r ON b.ride_id = r.id
+         JOIN rides r ON b.ride_id = r.ride_id
          JOIN users u ON r.driver_id = u.user_id
          WHERE b.passenger_id = ?
          ORDER BY b.booking_time DESC`,
@@ -109,7 +110,7 @@ const BookingsController = {
     const { ride_id } = req.params;
 
     try {
-      const [rows] = await db.execute(
+      const [rows] = await promiseDb.execute(
         `SELECT b.*, u.name, u.email, u.phone
          FROM bookings b
          JOIN users u ON b.passenger_id = u.user_id
@@ -141,7 +142,7 @@ const BookingsController = {
 
     try {
       // Get current booking data
-      const [bookingRows] = await db.execute(
+      const [bookingRows] = await promiseDb.execute(
         'SELECT ride_id, seats_booked, booking_status FROM bookings WHERE booking_id = ?',
         [booking_id]
       );
@@ -155,7 +156,7 @@ const BookingsController = {
       // If cancelling a booking that wasn't cancelled before
       if (status === 'CANCELLED' && currentBooking.booking_status !== 'CANCELLED') {
         // Return seats to the ride's available seats
-        await db.execute(
+        await promiseDb.execute(
           'UPDATE rides SET available_seats = available_seats + ? WHERE id = ?',
           [currentBooking.seats_booked, currentBooking.ride_id]
         );
@@ -164,7 +165,7 @@ const BookingsController = {
       // If reactivating a previously cancelled booking
       if (status !== 'CANCELLED' && currentBooking.booking_status === 'CANCELLED') {
         // Check if seats are still available
-        const [rideRows] = await db.execute(
+        const [rideRows] = await promiseDb.execute(
           'SELECT available_seats FROM rides WHERE id = ?',
           [currentBooking.ride_id]
         );
@@ -177,14 +178,14 @@ const BookingsController = {
         }
         
         // Deduct seats again
-        await db.execute(
+        await promiseDb.execute(
           'UPDATE rides SET available_seats = available_seats - ? WHERE id = ?',
           [currentBooking.seats_booked, currentBooking.ride_id]
         );
       }
 
       // Update the booking status
-      const [result] = await db.execute(
+      const [result] = await promiseDb.execute(
         'UPDATE bookings SET booking_status = ? WHERE booking_id = ?',
         [status, booking_id]
       );
@@ -205,11 +206,11 @@ const BookingsController = {
     const { booking_id } = req.params;
 
     try {
-      const [rows] = await db.execute(
+      const [rows] = await promiseDb.execute(
         `SELECT b.*, r.source, r.destination, r.start_time, r.price_per_seat,
          u_driver.name as driver_name, u_passenger.name as passenger_name
          FROM bookings b
-         JOIN rides r ON b.ride_id = r.id
+         JOIN rides r ON b.ride_id = r.ride_id
          JOIN users u_driver ON r.driver_id = u_driver.user_id
          JOIN users u_passenger ON b.passenger_id = u_passenger.user_id
          WHERE b.booking_id = ?`,

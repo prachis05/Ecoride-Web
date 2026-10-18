@@ -1,5 +1,5 @@
 
-name: EcoRide CI
+name: EcoRide CI/CD
 
 on:
   push:
@@ -8,6 +8,10 @@ on:
   pull_request:
     branches:
       - "**"
+
+permissions:
+  contents: read
+  id-token: write
 
 jobs:
   test-and-build:
@@ -34,3 +38,27 @@ jobs:
 
       - name: Build backend Docker image
         run: docker build -t ecoride-backend:ci ./backend
+
+      - name: Configure AWS credentials
+        if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ap-south-1
+
+      - name: Log in to Amazon ECR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Push Docker image to ECR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ecoride-backend
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker tag ecoride-backend:ci "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker tag ecoride-backend:ci "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
