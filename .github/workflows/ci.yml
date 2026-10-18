@@ -61,58 +61,36 @@ jobs:
           docker tag ecoride-backend:ci "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-   
-      - name: Configure SSH
-        if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
+  deploy-to-ec2:
+    needs: test-and-build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
+    runs-on: self-hosted
+
+    steps:
+      - name: Deploy container on EC2
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          EC2_HOST: ${{ vars.EC2_HOST }}
-        run: |
-          set -eu
-          mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/ec2_key
-          chmod 600 ~/.ssh/ec2_key
-
-          echo "Checking SSH port 22..."
-          nc -vz -w 10 "$EC2_HOST" 22
-
-          echo "Collecting SSH host key..."
-          ssh-keyscan -T 10 -t ed25519,rsa "$EC2_HOST" >> ~/.ssh/known_hosts
-
-          test -s ~/.ssh/known_hosts
-
-
-      - name: Test SSH connection
-        if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
-        env:
-          EC2_HOST: ${{ vars.EC2_HOST }}
-          EC2_USER: ${{ vars.EC2_USER }}
-        run: |
-          set -eu
-          ssh -i ~/.ssh/ec2_key \
-            -o BatchMode=yes \
-            "$EC2_USER@$EC2_HOST" \
-            "echo SSH_CONNECTION_OK"
-
-      - name: Deploy to EC2
-        if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
-        env:
-          EC2_HOST: ${{ vars.EC2_HOST }}
-          EC2_USER: ${{ vars.EC2_USER }}
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: 322768320060.dkr.ecr.ap-south-1.amazonaws.com
           ECR_REPOSITORY: ecoride-backend
           IMAGE_TAG: ${{ github.sha }}
         run: |
           set -eu
 
-          ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" \
-            "aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin $ECR_REGISTRY && sudo docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "Logging in to Amazon ECR..."
+          aws ecr get-login-password --region ap-south-1 \
+            | sudo docker login --username AWS --password-stdin "$ECR_REGISTRY"
 
-          ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" \
-            "sudo docker inspect ecoride-backend --format='{{.Config.Image}}' > /tmp/ecoride-previous-image && sudo docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "Pulling new image..."
+          sudo docker pull "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-          ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" \
-            "sudo docker stop ecoride-backend && sudo docker rm ecoride-backend && sudo docker run -d --name ecoride-backend --restart unless-stopped -p 5000:5000 --env-file /home/ubuntu/ecoride.env $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          echo "Replacing the running container..."
+          sudo docker rm -f ecoride-backend || true
+          sudo docker run -d \
+            --name ecoride-backend \
+            --restart unless-stopped \
+            -p 5000:5000 \
+            --env-file /home/ubuntu/ecoride.env \
+            "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
-          ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" \
-            "sleep 5 && curl -fsS http://localhost:5000/health"
+          echo "Waiting for health check..."
+          sleep 5
+          curl -fsS http://localhost:5000/health
