@@ -59,41 +59,50 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker tag ecoride-backend:ci "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-          docker tag ecoride-backend:ci "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
           docker push "$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-          docker push "$ECR_REGISTRY/$ECR_REPOSITORY:latest"
-      
-      
-      
+
+      - name: Configure SSH
+        if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        run: |
+          set -eu
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/ec2_key
+          chmod 600 ~/.ssh/ec2_key
+          ssh-keyscan -H "${{ vars.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Test SSH connection
+        if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
+        env:
+          EC2_HOST: ${{ vars.EC2_HOST }}
+          EC2_USER: ${{ vars.EC2_USER }}
+        run: |
+          set -eu
+          ssh -i ~/.ssh/ec2_key \
+            -o BatchMode=yes \
+            "$EC2_USER@$EC2_HOST" \
+            "echo SSH_CONNECTION_OK"
+
       - name: Deploy to EC2
         if: github.event_name == 'push' && github.ref == 'refs/heads/devops-setup'
         env:
           EC2_HOST: ${{ vars.EC2_HOST }}
           EC2_USER: ${{ vars.EC2_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ecoride-backend
           IMAGE_TAG: ${{ github.sha }}
         run: |
           set -eu
 
-          mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/ec2_key
-          chmod 600 ~/.ssh/ec2_key
-          ssh-keyscan -H "$EC2_HOST" >> ~/.ssh/known_hosts
-
-
-	          echo "Testing SSH connection..."
-          ssh -v -i ~/.ssh/ec2_key \
-            -o BatchMode=yes \
-            "$EC2_USER@$EC2_HOST" \
-            "echo SSH_CONNECTION_OK"
-
-          
-
           ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" \
             "aws ecr get-login-password --region ap-south-1 | sudo docker login --username AWS --password-stdin $ECR_REGISTRY && sudo docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
           ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" \
-            "set -e; OLD_IMAGE=\$(sudo docker inspect ecoride-backend --format='{{.Config.Image}}'); sudo docker stop ecoride-backend; sudo docker rm ecoride-backend; if sudo docker run -d --name ecoride-backend --restart unless-stopped -p 5000:5000 --env-file /home/ubuntu/ecoride.env $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG; then sleep 5; if curl -fsS http://localhost:5000/health; then exit 0; fi; fi; echo 'Deployment failed; rolling back'; sudo docker rm -f ecoride-backend 2>/dev/null || true; sudo docker run -d --name ecoride-backend --restart unless-stopped -p 5000:5000 --env-file /home/ubuntu/ecoride.env \$OLD_IMAGE; exit 1"
+            "sudo docker inspect ecoride-backend --format='{{.Config.Image}}' > /tmp/ecoride-previous-image && sudo docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
+          ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" \
+            "sudo docker stop ecoride-backend && sudo docker rm ecoride-backend && sudo docker run -d --name ecoride-backend --restart unless-stopped -p 5000:5000 --env-file /home/ubuntu/ecoride.env $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+          ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" \
+            "sleep 5 && curl -fsS http://localhost:5000/health"
